@@ -1,17 +1,12 @@
-import { Add } from "@mui/icons-material";
-import { Box, Fab, List, Paper, Typography, Zoom } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
-import WalletItem from "../components/WalletItem";
-import { CategoryList } from "../models/CategoryModel";
-import { WalletsModel } from "../models/WalletModel";
-import { createWallet } from "../tools/firebase.functions";
-import { getComparator } from "../tools/getComparator";
-import useAuth from "../tools/useAuth";
-import useWallets from "../tools/useWallets";
+import { Add } from '@mui/icons-material'
+import { Box, Fab, List, Paper, Typography, Zoom } from '@mui/material'
+import { Link, Outlet } from 'react-router-dom'
+import WalletItem from '../components/WalletItem'
+import useAuth from '../tools/useAuth'
+import useWallets from '../tools/useWallets'
 
-function Wallets() {
-  useAuth().setTitle("Billetera");
+const Wallets: React.FC<{}> = () => {
+  useAuth().setTitle('Billetera')
   const { wallets } = useWallets()
 
   return (
@@ -19,12 +14,11 @@ function Wallets() {
       // bgcolor: "#ffffffa1"
       pb: 8
     }}>
-      {wallets.length ?
-        <List>
+      {(wallets.length > 0)
+        ? <List>
           {wallets.map(wallet => <WalletItem wallet={wallet} />)}
         </List>
-        :
-        <Paper elevation={4} sx={{
+        : <Paper elevation={4} sx={{
           margin: '50% 0px',
           padding: 4
         }}>
@@ -45,7 +39,7 @@ function Wallets() {
           <Fab sx={{
             position: 'fixed',
             bottom: 16,
-            right: 16,
+            right: 16
           }} aria-label={'new-wallet'} color='primary'>
             <Add />
           </Fab>
@@ -56,4 +50,4 @@ function Wallets() {
   )
 }
 
-export default Wallets;
+export default Wallets

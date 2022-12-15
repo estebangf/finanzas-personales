@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import MainLayout from './layouts';
-import { ThemeProvider } from '@emotion/react';
-import { createTheme, Dialog } from '@mui/material';
-import Movements from './views/Movements';
-import RequireAuth from './components/auth/RequireAuth';
-import SignIn from './views/SignIn';
-import useAuth from './tools/useAuth';
-import Movement from './views/Movement';
-import WalletsProvider from './features/WalletsProvider';
-import MovementsProvider from './features/MovementsProvider';
-import Wallets from './views/Wallets';
-import Wallet from './views/Wallet';
-import LoadingPage from './views/LoadingPage';
-
+import React from 'react'
+import logo from './logo.svg'
+import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import MainLayout from './layouts'
+import { ThemeProvider } from '@emotion/react'
+import { createTheme, Dialog } from '@mui/material'
+import Movements from './views/Movements'
+import RequireAuth from './components/auth/RequireAuth'
+import SignIn from './views/SignIn'
+import useAuth from './tools/useAuth'
+import Movement from './views/Movement'
+import WalletsProvider from './features/WalletsProvider'
+import MovementsProvider from './features/MovementsProvider'
+import Wallets from './views/Wallets'
+import Wallet from './views/Wallet'
+import LoadingPage from './views/LoadingPage'
 
 const lightTheme = createTheme({
   palette: {
-    mode: 'light',
+    mode: 'light'
     // primary: {
     //   light: '#ffc889',
     //   main: '#7b4b27',
@@ -43,23 +42,23 @@ const lightTheme = createTheme({
     //   paper: '#ffc889',
     // }
     // getContrastText?: (background: string) => string;
-  },
-});
+  }
+})
 
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#1976d2',
-    },
-  },
-});
+      main: '#1976d2'
+    }
+  }
+})
 
-function App() {
-  const auth = useAuth();
+function App () {
+  const auth = useAuth()
 
   return (
-    <div className={auth.user ? 'App-logued' : 'App'}>
+    <div className={(auth.user != null) ? 'App-logued' : 'App'}>
       <div id="fondo" />
       <ThemeProvider theme={lightTheme}>
         <BrowserRouter>
@@ -83,7 +82,7 @@ function App() {
         </BrowserRouter>
       </ThemeProvider>
     </div >
-  );
+  )
 }
 
-export default App;
+export default App

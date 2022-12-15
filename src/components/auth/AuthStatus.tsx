@@ -1,23 +1,23 @@
-import { Fragment, useState, MouseEvent } from "react";
-import { Person, Settings, Logout } from "@mui/icons-material";
-import { Box, Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
+import { Fragment, useState, MouseEvent } from 'react'
+import { Person, Settings, Logout } from '@mui/icons-material'
+import { Box, Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
 import { Link as LinkDom } from 'react-router-dom'
-import useAuth from "../../tools/useAuth";
+import useAuth from '../../tools/useAuth'
 
-export default function AuthStatus() {
-  let auth = useAuth();
+export default function AuthStatus () {
+  const auth = useAuth()
   // let navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
   const handleClick = (event: MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
-  if (!auth.user) {
+  if (auth.user == null) {
     return <LinkDom to="/signin">
       <IconButton
         size="small"
@@ -32,7 +32,7 @@ export default function AuthStatus() {
   return (
     <Fragment>
       <Box sx={{
-        marginLeft: "auto",
+        marginLeft: 'auto',
         display: 'flex',
         alignItems: 'center',
         textAlign: 'center'
@@ -47,7 +47,7 @@ export default function AuthStatus() {
           >
             <Avatar
               alt={`${auth.user.displayName}`}
-              src={auth.user.photoURL ? auth.user.photoURL : "https://www.gstatic.com/images/branding/product/1x/contacts_48dp.png"}
+              src={auth.user.photoURL ? auth.user.photoURL : 'https://www.gstatic.com/images/branding/product/1x/contacts_48dp.png'}
             />
           </IconButton>
         </Tooltip>
@@ -70,7 +70,7 @@ export default function AuthStatus() {
               width: 32,
               height: 32,
               ml: -0.5,
-              mr: 1,
+              mr: 1
             },
             '&:before': {
               content: '""',
@@ -82,16 +82,16 @@ export default function AuthStatus() {
               height: 10,
               bgcolor: 'background.paper',
               transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
+              zIndex: 0
+            }
+          }
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Box sx={{
           padding: 3,
-          textAlign: "center"
+          textAlign: 'center'
         }}
         >
           <Typography variant="subtitle2">Bienvenid@</Typography>
@@ -115,7 +115,7 @@ export default function AuthStatus() {
         </MenuItem>
         <Divider />
         <MenuItem
-          onClick={() => auth.signout()}
+          onClick={async () => await auth.signout()}
         >
           <ListItemIcon>
             <Logout fontSize="small" />
@@ -124,5 +124,5 @@ export default function AuthStatus() {
         </MenuItem>
       </Menu>
     </Fragment >
-  );
+  )
 }

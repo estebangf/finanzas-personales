@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import { WalletsContext } from "../features/WalletsProvider";
+import { useContext } from 'react'
+import { WalletsContext } from '../features/WalletsProvider'
 
-const useWallets = () => useContext(WalletsContext);
+const useWallets = () => useContext(WalletsContext)
 
-export default useWallets;
+export default useWallets

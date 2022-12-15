@@ -1,23 +1,22 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Link as LinkDom } from 'react-router-dom';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Google } from '@mui/icons-material';
-import useAuth from '../tools/useAuth';
-import { Link } from '@mui/material';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { Link as LinkDom, useNavigate, useLocation } from 'react-router-dom'
+import Paper from '@mui/material/Paper'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
 
+import { Google } from '@mui/icons-material'
+import useAuth from '../tools/useAuth'
+import { Link } from '@mui/material'
 
-function Copyright(props: any) {
+function Copyright (props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -27,31 +26,27 @@ function Copyright(props: any) {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  );
+  )
 }
 
+export default function SignIn () {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const auth = useAuth()
 
-export default function SignIn() {
+  const from = (location.state)?.from?.pathname || '/'
 
-  let navigate = useNavigate();
-  let location = useLocation();
-  let auth = useAuth();
-
-  let from = (location.state as any)?.from?.pathname || "/";
-
-  function handleSubmit() {
-    console.log("handleSubmit")
+  function handleSubmit () {
+    console.log('handleSubmit')
     auth.signInGoogle().then(() => {
-      console.log("Registred");
+      console.log('Registred')
       // navigate(from, { replace: true });
     }).catch((e: any) => {
-      console.log("Registred ERROR");
+      console.log('Registred ERROR')
       console.log(e)
       alert(e)
-    });
-  };
-
-
+    })
+  }
 
   return (
     <Grid
@@ -72,7 +67,7 @@ export default function SignIn() {
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'center'
         }}
       />
       <Grid
@@ -93,7 +88,7 @@ export default function SignIn() {
             mx: 4,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'center'
             // height: '100vh'
           }}
         >
@@ -117,7 +112,7 @@ export default function SignIn() {
               sx={{
                 mt: 3,
                 mb: 2,
-                borderRadius: 6,
+                borderRadius: 6
               }}
             >
               Ingresar con Google
@@ -127,5 +122,5 @@ export default function SignIn() {
         </Box>
       </Grid>
     </Grid>
-  );
+  )
 }

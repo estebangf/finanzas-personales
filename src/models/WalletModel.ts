@@ -1,5 +1,5 @@
-import { DocumentData, Timestamp } from "firebase/firestore";
-import CategoryModel from "./CategoryModel";
+import { DocumentData, Timestamp } from 'firebase/firestore'
+import CategoryModel from './CategoryModel'
 
 const WALLETS_COLLECTION = 'wallets'
 
@@ -13,7 +13,6 @@ interface WalletModel {
   owners: string[]
 }
 
-
 // Firestore data converter
 const walletConverter = {
   toFirestore: (wallet: WalletModel) => {
@@ -22,39 +21,38 @@ const walletConverter = {
       name: wallet.name,
       balance: wallet.balance,
       created: Timestamp.fromDate(wallet.created),
-      owners: wallet.owners,
+      owners: wallet.owners
     }
   },
   fromFirestore: (snapshot: DocumentData, options: any) => {
     // console.log("fromFirestore: ", options)
     const data = snapshot.data(options)
-    let newWallet: WalletModel = {
+    const newWallet: WalletModel = {
       _id: snapshot.id,
       _creator: data._creator,
       name: data.name,
       balance: data.balance,
       created: data.created.toDate(),
-      owners: data.owners,
+      owners: data.owners
     }
-    return newWallet;
-  },
+    return newWallet
+  }
 }
 
 const initialWallet: WalletModel = {
-  _id: "",
-  _creator: "",
-  name: "",
+  _id: '',
+  _creator: '',
+  name: '',
   balance: 0.00,
   created: new Date(),
   owners: []
 }
-
 
 export {
   WALLETS_COLLECTION,
   walletConverter,
   initialWallet
 }
-export type WalletsModel = WalletModel[];
+export type WalletsModel = WalletModel[]
 
-export default WalletModel;
+export default WalletModel

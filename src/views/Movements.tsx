@@ -1,25 +1,23 @@
-import { Add } from "@mui/icons-material";
-import { Box, Fab, List, Zoom } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Link, Navigate, Outlet } from "react-router-dom";
-import MovementItem from "../components/MovementItem";
-import { CategoryList } from "../models/CategoryModel";
-import { MovementsModel } from "../models/MovementModel";
-import { getComparator } from "../tools/getComparator";
-import useAuth from "../tools/useAuth";
-import useMovements from "../tools/useMovements";
-import useWallets from "../tools/useWallets";
+import { Add } from '@mui/icons-material'
+import { Box, Fab, List, Zoom } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { Link, Navigate, Outlet } from 'react-router-dom'
+import MovementItem from '../components/MovementItem'
+import { CategoryList } from '../models/CategoryModel'
+import { MovementsModel } from '../models/MovementModel'
+import { getComparator } from '../tools/getComparator'
+import useAuth from '../tools/useAuth'
+import useMovements from '../tools/useMovements'
+import useWallets from '../tools/useWallets'
 
-function Movements() {
+function Movements () {
   // useAuth().setTitle("Lista de movimientos");
-  useAuth().setTitle(useWallets().walletSelected?.name || "Cargando cuenta");
+  useAuth().setTitle(useWallets().walletSelected?.name || 'Cargando cuenta')
   const { movements } = useMovements()
   const { walletSelected } = useWallets()
 
-  if (!walletSelected)
-    return <Navigate to='/wallets' replace />
-  else
-  return (
+  if (walletSelected == null) { return <Navigate to='/wallets' replace /> } else {
+    return (
     <Box sx={{
       // bgcolor: "#ffffffa1"
       pb: 8
@@ -35,7 +33,7 @@ function Movements() {
           <Fab sx={{
             position: 'fixed',
             bottom: 16,
-            right: 16,
+            right: 16
           }} aria-label={'new-movement'} color='primary'>
             <Add />
           </Fab>
@@ -43,7 +41,8 @@ function Movements() {
       </Zoom>
       <Outlet />
     </Box>
-  )
+    )
+  }
 }
 
-export default Movements;
+export default Movements

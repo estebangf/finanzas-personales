@@ -1,7 +1,6 @@
-import { DocumentData } from "firebase/firestore"
-import { Timestamp } from "firebase/firestore"
+import { DocumentData, Timestamp } from 'firebase/firestore'
 
-const PROFILES_COLLECTION = "profiles";
+const PROFILES_COLLECTION = 'profiles'
 
 interface ProfileModel {
   _id: string
@@ -20,32 +19,31 @@ const profileConverter = {
       displayName: profile.displayName,
       email: profile.email,
       phoneNumber: profile.phoneNumber,
-      photoURL: profile.photoURL,
+      photoURL: profile.photoURL
     }
   },
   fromFirestore: (snapshot: DocumentData, options: any) => {
     const data = snapshot.data(options)
-    let newProfile: ProfileModel = {
+    const newProfile: ProfileModel = {
       _id: snapshot.id,
       createdAt: data.createdAt.toDate(),
       displayName: data.displayName,
       email: data.email,
       phoneNumber: data.phoneNumber,
-      photoURL: data.photoURL,
+      photoURL: data.photoURL
     }
-    return newProfile;
-  },
+    return newProfile
+  }
 }
 
 const initialProfile: ProfileModel = {
-  _id: "new",
+  _id: 'new',
   createdAt: new Date(),
-  displayName: "",
-  email: "",
-  phoneNumber: "",
-  photoURL: "",
+  displayName: '',
+  email: '',
+  phoneNumber: '',
+  photoURL: ''
 }
-
 
 export {
   PROFILES_COLLECTION,
@@ -53,4 +51,4 @@ export {
   initialProfile
 }
 
-export default ProfileModel;
+export default ProfileModel

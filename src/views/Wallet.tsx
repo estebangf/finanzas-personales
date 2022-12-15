@@ -1,11 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, InputAdornment, List, ListItemIcon, ListItemText, MenuItem, Skeleton, styled, TextField } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import SkeletonInput from "../components/skeletons/SkeletonInput";
-import { CategoryList, CategoryListIcons } from "../models/CategoryModel";
-import WalletModel, { initialWallet } from "../models/WalletModel";
-import { createWallet } from "../tools/firebase.functions";
-import useAuth from "../tools/useAuth";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, InputAdornment, List, ListItemIcon, ListItemText, MenuItem, Skeleton, styled, TextField } from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import SkeletonInput from '../components/skeletons/SkeletonInput'
+import { CategoryList, CategoryListIcons } from '../models/CategoryModel'
+import WalletModel, { initialWallet } from '../models/WalletModel'
+import { createWallet } from '../tools/firebase.functions'
+import useAuth from '../tools/useAuth'
 
 const InputWallet = styled(TextField)({
   marginTop: 12
@@ -14,10 +14,10 @@ const InputWallet = styled(TextField)({
 interface WalletProps {
   // wallet: WalletModel
 }
-export default function Wallet({ }: WalletProps) {
+export default function Wallet ({ }: WalletProps) {
   const { user, firestore } = useAuth()
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const { _id } = useParams()
   const [wallet, setWallet] = useState<WalletModel>({
     ...initialWallet,
@@ -27,17 +27,17 @@ export default function Wallet({ }: WalletProps) {
   const refInputAmount = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
-    if (_id === "new") setWallet(p => ({
-      ...p,
-      _id: 'new'
-    }))
-    else console.error("Cargar desde la base de datos no implementado");
+    if (_id === 'new') {
+      setWallet(p => ({
+        ...p,
+        _id: 'new'
+      }))
+    } else console.error('Cargar desde la base de datos no implementado')
   }, [_id])
 
-
-  function changeWallet(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function changeWallet (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     // console.log('event: ', e)
-    console.log(e.target.name, ": ", e.target.value)
+    console.log(e.target.name, ': ', e.target.value)
     let {
       name,
       value
@@ -49,35 +49,34 @@ export default function Wallet({ }: WalletProps) {
     }))
   }
 
-  function parseValue(name: keyof WalletModel, value: string): any {
+  function parseValue (name: keyof WalletModel, value: string): any {
     switch (name) {
       case 'name':
         return value
       case 'balance':
-        if (value === 'Backspace')
-          return parseFloat((Math.trunc(wallet.balance * 10) / 100).toFixed(2));
+        if (value === 'Backspace') { return parseFloat((Math.trunc(wallet.balance * 10) / 100).toFixed(2)) }
         return parseFloat(value) || value === '0' ? wallet.balance * 10 + parseFloat(value) / 100 : wallet.balance
 
       default:
-        break;
+        break
     }
   }
 
-  function dateFromInput(_date: Date) {
-    let fullYear = _date.getFullYear(),
-      month = _date.getMonth(),
-      date = _date.getDate(),
-      hours = _date.getHours(),
-      minutes = _date.getMinutes();
+  function dateFromInput (_date: Date) {
+    const fullYear = _date.getFullYear()
+    const month = _date.getMonth()
+    const date = _date.getDate()
+    const hours = _date.getHours()
+    const minutes = _date.getMinutes()
 
-    return `${fullYear}-${month < 10 ? "0" : ''}${month}-${date < 10 ? "0" : ''}${date}T${hours < 10 ? "0" : ''}${hours}:${minutes < 10 ? "0" : ''}${minutes}`
+    return `${fullYear}-${month < 10 ? '0' : ''}${month}-${date < 10 ? '0' : ''}${date}T${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`
   }
 
-  function save() {
+  function save () {
     createWallet(wallet, firestore).then(r => {
       navigate(-1)
     }).catch(e => {
-      console.error("Save Wallet:", e)
+      console.error('Save Wallet:', e)
     })
     // console.error("Guardar en la base de datos no implementado");
   }
@@ -85,35 +84,33 @@ export default function Wallet({ }: WalletProps) {
   return (
     <Dialog fullWidth={true} maxWidth='xs' open={true} onClose={e => navigate(-1)}>
       <DialogTitle>
-        {!wallet._id ? "Cargando" : wallet._id === 'new' ? "Nuevo Movimiento" : "Editar Movimiento"}
+        {!wallet._id ? 'Cargando' : wallet._id === 'new' ? 'Nuevo Movimiento' : 'Editar Movimiento'}
       </DialogTitle>
-      {!wallet._id ?
-        <DialogContent>
+      {!wallet._id
+        ? <DialogContent>
           <SkeletonInput />
           <SkeletonInput />
         </DialogContent>
-        :
-        <DialogContent>
+        : <DialogContent>
           <InputWallet
             fullWidth onChange={changeWallet} name='name' value={wallet.name} placeholder="Nombre" label="Nombre" type="text" />
           <InputWallet
             fullWidth name='balance' value={wallet.balance.toFixed(2)} placeholder="Monto" label="Monto" type="text"
             onFocus={e => {
-              let { length } = refInputAmount.current.value
+              const { length } = refInputAmount.current.value
               refInputAmount.current.setSelectionRange(length, length)
               refInputAmount.current.focus()
             }}
             onClick={e => {
-              let { length } = refInputAmount.current.value
+              const { length } = refInputAmount.current.value
               refInputAmount.current.setSelectionRange(length, length)
               refInputAmount.current.focus()
             }}
             onKeyDown={e => {
-              if (e.key !== 'Tab' && e.key !== 'Enter')
-                e.preventDefault()
+              if (e.key !== 'Tab' && e.key !== 'Enter') { e.preventDefault() }
               changeWallet({
                 target: {
-                  name: "balance",
+                  name: 'balance',
                   value: e.key
                 }
               } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)
@@ -122,7 +119,7 @@ export default function Wallet({ }: WalletProps) {
               ref: refInputAmount,
               inputMode: 'decimal',
               // pattern: '[0-9]*',
-              pattern: "[0-9]*",
+              pattern: '[0-9]*',
               dataReverse: true,
               sx: {
                 textAlign: 'right'
@@ -138,7 +135,7 @@ export default function Wallet({ }: WalletProps) {
           Cancelar
         </Button>
         <Button fullWidth variant="contained" disabled={!wallet._id} onClick={save}>
-          {!wallet._id ? "..." : wallet._id === 'new' ? "Crear" : "Guardar"}
+          {!wallet._id ? '...' : wallet._id === 'new' ? 'Crear' : 'Guardar'}
         </Button>
       </DialogActions>
     </Dialog >

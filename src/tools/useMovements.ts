@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import { MovementsContext } from "../features/MovementsProvider";
+import { useContext } from 'react'
+import { MovementContextType, MovementsContext } from '../features/MovementsProvider'
 
-const useMovements = () => useContext(MovementsContext);
+const useMovements = (): MovementContextType => useContext(MovementsContext)
 
-export default useMovements;
+export default useMovements

@@ -1,30 +1,28 @@
-import { KeyboardArrowDown, Menu } from "@mui/icons-material"
-import { Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled } from "@mui/material"
-import { Fragment, useState } from "react"
-import { useNavigate } from "react-router-dom";
-import { menuOptions, menuPersonalOptions } from "../values/OptionMenuListValue";
-
+import { KeyboardArrowDown, Menu } from '@mui/icons-material'
+import { Box, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material'
+import { Fragment, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { menuOptions, menuPersonalOptions } from '../values/OptionMenuListValue'
 
 const MenuList = styled(List)<{ component?: React.ElementType }>({
   '& .MuiListItemButton-root': {
     paddingLeft: 24,
-    paddingRight: 24,
+    paddingRight: 24
   },
   '& .MuiListItemIcon-root': {
     minWidth: 0,
-    marginRight: 16,
+    marginRight: 16
   },
   '& .MuiSvgIcon-root': {
-    fontSize: 20,
-  },
-});
+    fontSize: 20
+  }
+})
 
-
-function AppMenu() {
-  const navigate = useNavigate();
+function AppMenu () {
+  const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [openListExtra, setOpenListExtra] = useState(true);
+  const [openListExtra, setOpenListExtra] = useState(true)
 
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -32,12 +30,11 @@ function AppMenu() {
       ((event as React.KeyboardEvent).key === 'Tab' ||
         (event as React.KeyboardEvent).key === 'Shift')
     ) {
-      return;
+      return
     }
 
-    setIsOpen(open);
-  };
-
+    setIsOpen(open)
+  }
 
   return (
     <Fragment>
@@ -56,7 +53,7 @@ function AppMenu() {
         >
           <MenuList sx={{
             paddingTop: 0,
-            paddingBottom: 0,
+            paddingBottom: 0
           }}>
             <ListItemButton component="a" sx={{ paddingTop: 2 }}>
               <ListItemIcon sx={{ fontSize: 20 }}>💰</ListItemIcon>
@@ -66,7 +63,7 @@ function AppMenu() {
                 primaryTypographyProps={{
                   fontSize: 20,
                   fontWeight: 'medium',
-                  letterSpacing: 0,
+                  letterSpacing: 0
                 }}
               />
             </ListItemButton>
@@ -85,7 +82,7 @@ function AppMenu() {
                     primaryTypographyProps={{
                       color: 'primary',
                       fontWeight: 'medium',
-                      variant: 'body2',
+                      variant: 'body2'
                     }} />
                 </ListItemButton>
               </ListItem>
@@ -96,7 +93,7 @@ function AppMenu() {
                 // maxWidth: 250,
                 width: 'auto',
                 bgcolor: openListExtra ? '#47628217' : null,
-                pb: openListExtra ? 2 : 0,
+                pb: openListExtra ? 2 : 0
               }}
             >
               <ListItemButton
@@ -106,7 +103,7 @@ function AppMenu() {
                   px: 3,
                   pt: 2.5,
                   pb: openListExtra ? 0 : 2.5,
-                  '&:hover, &:focus': { '& svg': { opacity: openListExtra ? 1 : 0 } },
+                  '&:hover, &:focus': { '& svg': { opacity: openListExtra ? 1 : 0 } }
                 }}
               >
                 <ListItemText
@@ -115,14 +112,14 @@ function AppMenu() {
                     fontSize: 15,
                     fontWeight: 'medium',
                     lineHeight: '20px',
-                    mb: '2px',
+                    mb: '2px'
                   }}
                   secondary={menuPersonalOptions.map((menu) => `${menu.label}, `)}
                   secondaryTypographyProps={{
                     noWrap: true,
                     fontSize: 12,
                     lineHeight: '16px',
-                    color: openListExtra ? 'rgba(0,0,0,0)' : '#000000bf',
+                    color: openListExtra ? 'rgba(0,0,0,0)' : '#000000bf'
                   }}
                   sx={{ my: 0 }}
                 />
@@ -131,7 +128,7 @@ function AppMenu() {
                     mr: -1,
                     opacity: 0,
                     transform: openListExtra ? 'rotate(-180deg)' : 'rotate(0)',
-                    transition: '0.2s',
+                    transition: '0.2s'
                   }}
                 />
               </ListItemButton>
