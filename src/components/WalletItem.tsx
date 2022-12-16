@@ -8,11 +8,11 @@ import useWallets from '../tools/useWallets'
 interface WalletProps {
   wallet: WalletModel
 }
-export default function WalletItem ({ wallet }: WalletProps) {
+const WalletItem: React.FC<WalletProps> = ({ wallet }) => {
   const { setWalletSelected } = useWallets()
   const navigate = useNavigate()
   // const Icon = CategoryListIcons[wallet.category];
-  const getColor = () => wallet.balance < 0 ? '#ff6b6b' : '#47aeec'
+  const getColor = (): string => wallet.balance < 0 ? '#ff6b6b' : '#47aeec'
 
   return (
     <Link to='/movements' style={{
@@ -54,3 +54,5 @@ export default function WalletItem ({ wallet }: WalletProps) {
     </Link>
   )
 }
+
+export default WalletItem

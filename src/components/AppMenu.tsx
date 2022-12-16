@@ -18,7 +18,7 @@ const MenuList = styled(List)<{ component?: React.ElementType }>({
   }
 })
 
-function AppMenu () {
+const AppMenu: React.FC<{}> = () => {
   const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState(false)

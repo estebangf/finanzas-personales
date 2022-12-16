@@ -1,6 +1,6 @@
 import { useContext } from 'react'
-import { AuthContext } from '../features/AuthProvider'
+import { AuthContext, AuthContextType } from '../features/AuthProvider'
 
-const useAuth = () => useContext(AuthContext)
+const useAuth = (): AuthContextType => useContext(AuthContext)
 
 export default useAuth

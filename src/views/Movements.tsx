@@ -10,9 +10,9 @@ import useAuth from '../tools/useAuth'
 import useMovements from '../tools/useMovements'
 import useWallets from '../tools/useWallets'
 
-function Movements () {
+const Movements: React.FC<{}> = () => {
   // useAuth().setTitle("Lista de movimientos");
-  useAuth().setTitle(useWallets().walletSelected?.name || 'Cargando cuenta')
+  useAuth().setTitle(useWallets().walletSelected?.name ?? 'Cargando cuenta')
   const { movements } = useMovements()
   const { walletSelected } = useWallets()
 

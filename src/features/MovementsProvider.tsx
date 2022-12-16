@@ -10,7 +10,7 @@ export interface MovementContextType {
 
 export const MovementsContext = React.createContext<MovementContextType>(null!)
 
-function MovementsProvider ({ children }: { children: React.ReactNode }) {
+const MovementsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { firestore } = useAuth()
   const { walletSelected } = useWallets()
   const [movements, setMovements] = useState<MovementsModel>([])

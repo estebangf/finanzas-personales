@@ -2,21 +2,17 @@ import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { Link as LinkDom, useNavigate, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import Paper from '@mui/material/Paper'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 
-import { Google } from '@mui/icons-material'
 import useAuth from '../tools/useAuth'
 import { Link } from '@mui/material'
 
-function Copyright (props: any) {
+const Copyright: React.FC<any> = (props) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
@@ -29,23 +25,23 @@ function Copyright (props: any) {
   )
 }
 
-export default function SignIn () {
-  const navigate = useNavigate()
+const SignIn: React.FC<{}> = () => {
   const location = useLocation()
   const auth = useAuth()
 
   const from = (location.state)?.from?.pathname || '/'
 
-  function handleSubmit () {
+  function handleSubmit (): void {
     console.log('handleSubmit')
-    auth.signInGoogle().then(() => {
-      console.log('Registred')
+    auth.signInGoogle()
+      .then(() => {
+        console.log('Registred')
       // navigate(from, { replace: true });
-    }).catch((e: any) => {
-      console.log('Registred ERROR')
-      console.log(e)
-      alert(e)
-    })
+      }).catch((e: any) => {
+        console.log('Registred ERROR')
+        console.log(e)
+        alert(e)
+      })
   }
 
   return (
@@ -124,3 +120,5 @@ export default function SignIn () {
     </Grid>
   )
 }
+
+export default SignIn

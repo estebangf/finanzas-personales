@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import WalletModel, { WalletsModel } from '../models/WalletModel'
 import { onSnapshotWallets } from '../tools/firebase.functions'
 import useAuth from '../tools/useAuth'
+import { compareWallet } from '../tools/useWallets'
 
 export interface WalletContextType {
   wallets: WalletsModel
@@ -11,7 +12,7 @@ export interface WalletContextType {
 
 export const WalletsContext = React.createContext<WalletContextType>(null!)
 
-function WalletsProvider ({ children }: { children: React.ReactNode }) {
+const WalletsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, firestore } = useAuth()
   const [wallets, setWallets] = useState<WalletsModel>([])
   const [walletSelected, setWalletSelected] = useState<WalletModel>()
@@ -41,14 +42,3 @@ function WalletsProvider ({ children }: { children: React.ReactNode }) {
 }
 
 export default WalletsProvider
-
-function compareWallet (w_1: WalletModel, w_2: WalletModel) {
-  const
-    balance = w_1.balance === w_2.balance
-  const name = w_1.name === w_2.name
-  let owners = w_1.owners.length === w_2.owners.length
-  w_1.owners.forEach(o => {
-    if (!owners) {} else { owners = w_2.owners.includes(o) }
-  })
-  return balance && name && owners
-}

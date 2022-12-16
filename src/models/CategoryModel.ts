@@ -228,10 +228,6 @@ export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: S
 }
 export default CategoryModel
 
-function getCategory (category: CategorySuperior | CategoryLower) {
-
-}
-
 // enum Arrow {
 //   Up,
 //   Down,

@@ -16,7 +16,6 @@ module.exports = {
     "ecmaFeatures": {
       "jsx": true
     },
-    // ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json',
   },
@@ -24,12 +23,18 @@ module.exports = {
     'react'
   ],
   rules: {
-    // Note: you must disable the base rule as it can report incorrect errors
-    // "dot-notation": "off",
+    "dot-notation": "off",
+    "no-case-declarations": "off",
     "react/jsx-key": "warn",
+    "react/prop-types": "off",
     "@typescript-eslint/dot-notation": "warn",
     "@typescript-eslint/quotes": "warn",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/promise-function-async": "off",
+    "@no-case-declarations": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
   },
   settings: {
     'import/parsers': {

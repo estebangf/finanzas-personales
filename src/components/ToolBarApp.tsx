@@ -74,10 +74,7 @@ const scrollingTheme = createTheme({
   }
 })
 
-interface AppBarStyledProps {
-  openDrawerDesktop: boolean
-}
-function ToolBarApp ({ openDrawerDesktop }: AppBarStyledProps) {
+const ToolBarApp: React.FC<{}> = () => {
   const { title } = useAuth()
   const { walletSelected } = useWallets()
 

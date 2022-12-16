@@ -2,14 +2,14 @@ import { Outlet } from 'react-router-dom'
 import ToolBarApp from '../components/ToolBarApp'
 import Box from '@mui/material/Box'
 
-function MainLayout () {
+const MainLayout: React.FC<{}> = () => {
   return (
     <div style={{
       // display: 'flex',
       backgroundColor: '#ffffffa1',
       minHeight: '-webkit-fill-available'
     }}>
-      <ToolBarApp openDrawerDesktop={false} />
+      <ToolBarApp />
       <Box sx={{
         width: '100%'
       }}>

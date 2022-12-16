@@ -1,8 +1,10 @@
 import { Skeleton } from '@mui/material'
 
-export default function SkeletonInput () {
+const SkeletonInput: React.FC<{}> = () => {
   return <>
     <Skeleton sx={{ mb: -2, width: 48 }} />
     <Skeleton sx={{ height: 68 }} />
   </>
 }
+
+export default SkeletonInput

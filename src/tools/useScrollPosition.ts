@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
-export const useScrollPosition = () => {
+export const useScrollPosition = (): number => {
   const [scrollPosition, setScrollPosition] = useState(0)
 
   useEffect(() => {
-    const updatePosition = () => {
+    const updatePosition = (): void => {
       setScrollPosition(window.pageYOffset)
     }
     window.addEventListener('scroll', updatePosition)

@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 import { useLocation, Navigate, NavigateProps } from 'react-router-dom'
 import useAuth from '../../tools/useAuth'
 
@@ -6,7 +8,8 @@ interface RequireAuthProps {
   required: boolean
   exclud?: boolean
 }
-export default function RequireAuth ({ children, required, exclud }: RequireAuthProps) {
+
+const RequireAuth: React.FC<RequireAuthProps> = ({ children, required, exclud }) => {
   const auth = useAuth()
   const location = useLocation()
 
@@ -14,8 +17,10 @@ export default function RequireAuth ({ children, required, exclud }: RequireAuth
   console.log('from', from)
 
   if (required) {
-    if (auth.user == null) {
-      return <Navigate to="/signin" state={{ from: location }} replace />
-    } else return children
-  } else if (exclud && (auth.user != null)) { return <Navigate to={from} replace /> } else return children
+    if (auth.user == null) return <Navigate to="/signin" state={{ from: location }} replace />
+    else return children
+  } else if (exclud && (auth.user != null)) return <Navigate to={from} replace />
+  else return children
 }
+
+export default RequireAuth

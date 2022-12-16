@@ -4,16 +4,16 @@ import { Box, Avatar, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip
 import { Link as LinkDom } from 'react-router-dom'
 import useAuth from '../../tools/useAuth'
 
-export default function AuthStatus () {
+const AuthStatus: React.FC<{}> = () => {
   const auth = useAuth()
   // let navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
-  const handleClick = (event: MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null)
   }
 
@@ -27,6 +27,12 @@ export default function AuthStatus () {
         />
       </IconButton>
     </LinkDom>
+  }
+
+  function signout (): void {
+    auth.signout()
+      .then(r => console.log(r))
+      .catch(e => console.error(e))
   }
 
   return (
@@ -46,7 +52,7 @@ export default function AuthStatus () {
             aria-expanded={open ? 'true' : undefined}
           >
             <Avatar
-              alt={`${auth.user.displayName}`}
+              alt={`${auth.user.displayName ?? 'none Display Name'}`}
               src={auth.user.photoURL ? auth.user.photoURL : 'https://www.gstatic.com/images/branding/product/1x/contacts_48dp.png'}
             />
           </IconButton>
@@ -115,7 +121,7 @@ export default function AuthStatus () {
         </MenuItem>
         <Divider />
         <MenuItem
-          onClick={async () => await auth.signout()}
+          onClick={signout}
         >
           <ListItemIcon>
             <Logout fontSize="small" />
@@ -126,3 +132,4 @@ export default function AuthStatus () {
     </Fragment >
   )
 }
+export default AuthStatus

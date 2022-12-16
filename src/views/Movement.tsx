@@ -8,15 +8,13 @@ import MovementModel, { initialMovement } from '../models/MovementModel'
 import { createMovement, getMovement, updateMovement } from '../tools/firebase.functions'
 import useAuth from '../tools/useAuth'
 import useWallets from '../tools/useWallets'
+import { dateFromInput } from '../tools/date.functions'
 
 const InputMovement = styled(TextField)({
   marginTop: 12
 })
 
-interface MovementProps {
-  // movement: MovementModel
-}
-export default function Movement ({ }: MovementProps) {
+const Movement: React.FC<{}> = () => {
   const navigate = useNavigate()
   const { user, firestore } = useAuth()
   const { walletSelected } = useWallets()
@@ -26,8 +24,8 @@ export default function Movement ({ }: MovementProps) {
   const [movement, setMovement] = useState<MovementModel>({
     ...initialMovement,
     date: new Date(),
-    _creator: user?.uid || '',
-    _wallet: walletSelected?._id || ''
+    _creator: user?.uid ?? '',
+    _wallet: walletSelected?._id ?? ''
   })
   const refInputAmount = useRef<HTMLInputElement>(null!)
 
@@ -39,15 +37,22 @@ export default function Movement ({ }: MovementProps) {
           _id: 'new'
         }))
       } else {
-        getMovement(_id, firestore).then(_m => {
-          setMovement(_m)
-          setIsPositive(_m.amount > 0)
-        })
+        getMovement(_id, firestore)
+          .then(_m => {
+            setMovement(_m)
+            setIsPositive(_m.amount > 0)
+          })
+          .catch(e => console.error(e))
       }
     } else navigate('/', { replace: true })
   }, [_id, firestore, navigate])
 
-  function changeMovement (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function changeMovement (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | {
+    target: {
+      name: string
+      value: string
+    }
+  }): void {
     // console.log('event: ', e)
     console.log(e.target.name, ': ', e.target.value)
     let {
@@ -62,6 +67,8 @@ export default function Movement ({ }: MovementProps) {
   }
 
   function parseValue (name: keyof MovementModel, value: string): any {
+    let { amount } = movement
+
     switch (name) {
       case 'date':
         /*
@@ -77,7 +84,6 @@ export default function Movement ({ }: MovementProps) {
 */
         return new Date(value)
       case 'amount':
-        let amount = movement.amount
         if (value === 'Backspace') { amount = parseFloat((Math.trunc(amount * 10) / 100).toFixed(2)) }
         amount = parseFloat(value) || value === '0'
           ? amount * 10 + (parseFloat(value) * (Math.sign(amount) || 1)) / 100
@@ -91,17 +97,7 @@ export default function Movement ({ }: MovementProps) {
     }
   }
 
-  function dateFromInput (_date: Date) {
-    const fullYear = _date.getFullYear()
-    const month = _date.getMonth()
-    const date = _date.getDate()
-    const hours = _date.getHours()
-    const minutes = _date.getMinutes()
-
-    return `${fullYear}-${month < 10 ? '0' : ''}${month}-${date < 10 ? '0' : ''}${date}T${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`
-  }
-
-  function save () {
+  function save (): void {
     if (_id === 'new') {
       createMovement(movement, firestore).then(r => {
         navigate(-1)
@@ -169,7 +165,7 @@ export default function Movement ({ }: MovementProps) {
                   name: 'amount',
                   value: e.key
                 }
-              } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)
+              })
             }}
             inputProps={{
               ref: refInputAmount,
@@ -235,3 +231,5 @@ export default function Movement ({ }: MovementProps) {
     </Dialog >
   )
 }
+
+export default Movement

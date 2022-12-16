@@ -20,7 +20,7 @@ export interface AuthContextType {
 
 export const AuthContext = React.createContext<AuthContextType>(null!)
 
-function AuthProvider ({ children }: { children: React.ReactNode }) {
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [title, setTitle] = useState('Finanzas Personales')
   const [user, setUser] = useState<User | null>(null)
   // const [profile, setProfile] = useState<ProfileModel | null>(null);
@@ -57,7 +57,7 @@ function AuthProvider ({ children }: { children: React.ReactNode }) {
       firebase,
       analytics,
       firestore,
-      signInGoogle: async () => await new Promise<User>((resolve, reject) => {
+      signInGoogle: () => new Promise<User>((resolve, reject) => {
         const provider = new GoogleAuthProvider()
         signInWithPopup(auth, provider)
           .then((result) => {
@@ -97,12 +97,12 @@ function AuthProvider ({ children }: { children: React.ReactNode }) {
                 console.error('Error col users => ', error)
                 const code = 'ERROR'
                 const message = 'Error'
-                reject({ code, message })
+                reject(new Error(message))
               })
             } else {
               const code = 'ERROR'
               const message = 'Error'
-              reject({ code, message })
+              reject(new Error(message))
             }
           })
           .catch((error) => {
@@ -114,10 +114,10 @@ function AuthProvider ({ children }: { children: React.ReactNode }) {
             // The AuthCredential type that was used.
             const credential = GoogleAuthProvider.credentialFromError(error)
             // ...
-            reject({ code, message, email, credential })
+            reject(new Error(message, { cause: { code, message, email, credential } }))
           })
       }),
-      signout: async () => await signOut(auth)
+      signout: () => signOut(auth)
     }}
     >{children}</AuthContext.Provider>
   )

@@ -11,18 +11,15 @@ const InputWallet = styled(TextField)({
   marginTop: 12
 })
 
-interface WalletProps {
-  // wallet: WalletModel
-}
-export default function Wallet ({ }: WalletProps) {
+const Wallet: React.FC<{}> = () => {
   const { user, firestore } = useAuth()
 
   const navigate = useNavigate()
   const { _id } = useParams()
   const [wallet, setWallet] = useState<WalletModel>({
     ...initialWallet,
-    _creator: user?.uid || '',
-    owners: [user?.uid || '']
+    _creator: user?.uid ?? '',
+    owners: [user?.uid ?? '']
   })
   const refInputAmount = useRef<HTMLInputElement>(null!)
 
@@ -35,7 +32,12 @@ export default function Wallet ({ }: WalletProps) {
     } else console.error('Cargar desde la base de datos no implementado')
   }, [_id])
 
-  function changeWallet (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function changeWallet (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | {
+    target: {
+      name: string
+      value: string
+    }
+  }): void {
     // console.log('event: ', e)
     console.log(e.target.name, ': ', e.target.value)
     let {
@@ -62,17 +64,7 @@ export default function Wallet ({ }: WalletProps) {
     }
   }
 
-  function dateFromInput (_date: Date) {
-    const fullYear = _date.getFullYear()
-    const month = _date.getMonth()
-    const date = _date.getDate()
-    const hours = _date.getHours()
-    const minutes = _date.getMinutes()
-
-    return `${fullYear}-${month < 10 ? '0' : ''}${month}-${date < 10 ? '0' : ''}${date}T${hours < 10 ? '0' : ''}${hours}:${minutes < 10 ? '0' : ''}${minutes}`
-  }
-
-  function save () {
+  function save (): void {
     createWallet(wallet, firestore).then(r => {
       navigate(-1)
     }).catch(e => {
@@ -113,7 +105,7 @@ export default function Wallet ({ }: WalletProps) {
                   name: 'balance',
                   value: e.key
                 }
-              } as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)
+              })
             }}
             inputProps={{
               ref: refInputAmount,
@@ -141,3 +133,5 @@ export default function Wallet ({ }: WalletProps) {
     </Dialog >
   )
 }
+
+export default Wallet

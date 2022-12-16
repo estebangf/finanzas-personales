@@ -1,4 +1,4 @@
-function descendingComparator (a: any, b: any, orderBy: keyof any) {
+function descendingComparator (a: any, b: any, orderBy: keyof any): (0 | 1 | -1) {
   if (!!b[orderBy].getTime && !!a[orderBy].getTime) {
     if (b[orderBy].getTime() < a[orderBy].getTime()) {
       return -1

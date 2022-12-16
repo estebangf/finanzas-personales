@@ -7,9 +7,9 @@ import MovementModel from '../models/MovementModel'
 interface MovemenentProps {
   movement: MovementModel
 }
-export default function MovementItem ({ movement }: MovemenentProps) {
+const MovementItem: React.FC<MovemenentProps> = ({ movement }) => {
   const Icon = CategoryListIcons[movement.category] || Error
-  const getColor = () => movement.amount < 0 ? '#ff6b6b' : '#47aeec'
+  const getColor = (): string => movement.amount < 0 ? '#ff6b6b' : '#47aeec'
 
   return (
     <Link to={movement._id} style={{
@@ -49,3 +49,5 @@ export default function MovementItem ({ movement }: MovemenentProps) {
     </Link>
   )
 }
+
+export default MovementItem

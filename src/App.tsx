@@ -54,7 +54,7 @@ const darkTheme = createTheme({
   }
 })
 
-function App () {
+const App: React.FC<{}> = () => {
   const auth = useAuth()
 
   return (
