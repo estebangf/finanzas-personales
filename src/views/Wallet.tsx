@@ -76,7 +76,7 @@ const Wallet: React.FC<{}> = () => {
   return (
     <Dialog fullWidth={true} maxWidth='xs' open={true} onClose={e => navigate(-1)}>
       <DialogTitle>
-        {!wallet._id ? 'Cargando' : wallet._id === 'new' ? 'Nuevo Movimiento' : 'Editar Movimiento'}
+        {!wallet._id ? 'Cargando' : wallet._id === 'new' ? 'Nueva Cuenta' : 'Editar Cuenta'}
       </DialogTitle>
       {!wallet._id
         ? <DialogContent>

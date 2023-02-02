@@ -18,10 +18,15 @@ const Wallets: React.FC<{}> = () => {
         ? <List>
           {wallets.map(wallet => <WalletItem wallet={wallet} />)}
         </List>
-        : <Paper elevation={4} sx={{
-          margin: '50% 0px',
-          padding: 4
+        : <Box sx={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column'
         }}>
+          <Paper elevation={4} sx={{
+            // margin: '50% 0px',
+            padding: 4
+          }}>
           <Typography sx={{
             textAlign: 'center',
             color: '#00000099'
@@ -30,6 +35,7 @@ const Wallets: React.FC<{}> = () => {
             crea una para empezar a controlar tus movimientos
           </Typography>
         </Paper>
+        </Box>
       }
       <Zoom
         in={true}
