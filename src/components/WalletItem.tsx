@@ -15,10 +15,16 @@ const WalletItem: React.FC<WalletProps> = ({ wallet }) => {
   const getColor = (): string => wallet.balance < 0 ? '#ff6b6b' : '#47aeec'
 
   return (
-    <Link to='/movements' style={{
-      color: 'inherit',
-      textDecoration: 'none'
-    }}>
+    <Link to='/movements'
+      style={{
+        color: 'inherit',
+        textDecoration: 'none'
+      }}
+      // onAuxClick={e => {
+      //   e.preventDefault()
+      //   navigate(wallet._id)
+      // }}
+    >
       <ListItem
         sx={{
           bgcolor: '#FFFFFF',
@@ -31,7 +37,7 @@ const WalletItem: React.FC<WalletProps> = ({ wallet }) => {
           setWalletSelected(wallet)
           // navigate('/movements')
         }}
-        onAuxClick={e => {
+        onContextMenu={e => {
           e.preventDefault()
           navigate(wallet._id)
         }}

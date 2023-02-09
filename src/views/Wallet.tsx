@@ -1,11 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, InputAdornment, List, ListItemIcon, ListItemText, MenuItem, Skeleton, styled, TextField } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, InputAdornment, List, ListItemIcon, ListItemText, MenuItem, Skeleton, styled, TextField } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SkeletonInput from '../components/skeletons/SkeletonInput'
 import { CategoryList, CategoryListIcons } from '../models/CategoryModel'
 import WalletModel, { initialWallet } from '../models/WalletModel'
-import { createWallet } from '../tools/firebase.functions'
+import { createWallet, deleteWallet, getWallet, updateWallet } from '../tools/firebase.functions'
 import useAuth from '../tools/useAuth'
+import { Close } from '@mui/icons-material'
 
 const InputWallet = styled(TextField)({
   marginTop: 12
@@ -24,13 +25,21 @@ const Wallet: React.FC<{}> = () => {
   const refInputAmount = useRef<HTMLInputElement>(null!)
 
   useEffect(() => {
-    if (_id === 'new') {
-      setWallet(p => ({
-        ...p,
-        _id: 'new'
-      }))
-    } else console.error('Cargar desde la base de datos no implementado')
-  }, [_id])
+    if (_id) {
+      if (_id === 'new') {
+        setWallet(p => ({
+          ...p,
+          _id: 'new'
+        }))
+      } else {
+        getWallet(_id, firestore)
+          .then(_w => {
+            setWallet(_w)
+          })
+          .catch(e => console.error(e))
+      }
+    } else navigate('/', { replace: true })
+  }, [_id, firestore, navigate])
 
   function changeWallet (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | {
     target: {
@@ -65,18 +74,55 @@ const Wallet: React.FC<{}> = () => {
   }
 
   function save (): void {
-    createWallet(wallet, firestore).then(r => {
-      navigate(-1)
-    }).catch(e => {
-      console.error('Save Wallet:', e)
-    })
+    if (_id === 'new') {
+      createWallet(wallet, firestore).then(r => {
+        navigate(-1)
+      }).catch(e => {
+        console.error('Save Wallet:', e)
+      })
+    } else {
+      updateWallet(wallet, firestore).then(r => {
+        navigate(-1)
+      }).catch(e => {
+        console.error('Update Wallet:', e)
+      })
+    }
     // console.error("Guardar en la base de datos no implementado");
   }
 
+  function remove (): void {
+    if (_id === 'new') {
+      throw new Error('Falta implementar.')
+    } else {
+      deleteWallet(wallet, firestore).then(r => {
+        navigate(-1)
+      }).catch(e => {
+        console.error('Update Wallet:', e)
+      })
+    }
+    // console.error("Guardar en la base de datos no implementado");
+  }
+
+  function onClose (): void {
+    navigate(-1)
+  }
+
   return (
-    <Dialog fullWidth={true} maxWidth='xs' open={true} onClose={e => navigate(-1)}>
+    <Dialog fullWidth={true} maxWidth='xs' open={true} onClose={onClose}>
       <DialogTitle>
         {!wallet._id ? 'Cargando' : wallet._id === 'new' ? 'Nueva Cuenta' : 'Editar Cuenta'}
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500]
+          }}
+        >
+          <Close />
+        </IconButton>
       </DialogTitle>
       {!wallet._id
         ? <DialogContent>
@@ -123,9 +169,11 @@ const Wallet: React.FC<{}> = () => {
         </DialogContent>
       }
       <DialogActions>
-        <Button fullWidth variant="text" color='secondary' onClick={e => navigate(-1)}>
-          Cancelar
+        { _id !== 'new' && (
+        <Button fullWidth variant="text" color='secondary' onClick={remove}>
+          Eliminar
         </Button>
+        )}
         <Button fullWidth variant="contained" disabled={!wallet._id} onClick={save}>
           {!wallet._id ? '...' : wallet._id === 'new' ? 'Crear' : 'Guardar'}
         </Button>

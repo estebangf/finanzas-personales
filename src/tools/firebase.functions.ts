@@ -1,4 +1,4 @@
-import { collection, onSnapshot, addDoc, Firestore, query, where, updateDoc, doc, increment, getDoc } from 'firebase/firestore'
+import { collection, onSnapshot, addDoc, Firestore, query, where, updateDoc, doc, increment, getDoc, deleteDoc } from 'firebase/firestore'
 import MovementModel, { movementConverter, MovementsModel, MOVEMENTS_COLLECTION } from '../models/MovementModel'
 import WalletModel, { walletConverter, WalletsModel, WALLETS_COLLECTION } from '../models/WalletModel'
 import { getComparator } from './getComparator'
@@ -94,6 +94,14 @@ export const createWallet = (wallet: WalletModel, firestore: Firestore): Promise
     .catch(e => reject(e))
 })
 
+export const getWallet = (walletId: string, firestore: Firestore): Promise<WalletModel> => new Promise<WalletModel>((resolve, reject) => {
+  const queryWallets = doc(firestore, WALLETS_COLLECTION, walletId).withConverter(walletConverter)
+  getDoc(queryWallets).then(result => {
+    if (result.exists()) { resolve(result.data()) } else { reject(new Error('Cuenta inexistente')) }
+  })
+    .catch(e => reject(e))
+})
+
 export const updateWallet = (wallet: WalletModel, firestore: Firestore): Promise<void> => new Promise<void>((resolve, reject) => {
   const queryWallets = doc(firestore, WALLETS_COLLECTION, wallet._id).withConverter(walletConverter)
   updateDoc(queryWallets, wallet).then(result => {
@@ -107,6 +115,14 @@ export const updateWalletBalance = (walletId: string, mod: number, firestore: Fi
   updateDoc(queryWallets, {
     balance: increment(mod)
   }).then(result => {
+    resolve()
+  })
+    .catch(e => reject(e))
+})
+
+export const deleteWallet = (wallet: WalletModel, firestore: Firestore): Promise<void> => new Promise<void>((resolve, reject) => {
+  const queryWallets = doc(firestore, WALLETS_COLLECTION, wallet._id)
+  deleteDoc(queryWallets).then(result => {
     resolve()
   })
     .catch(e => reject(e))
