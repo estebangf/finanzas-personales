@@ -35,6 +35,7 @@ module.exports = {
     "@typescript-eslint/promise-function-async": "off",
     "@no-case-declarations": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
+    // "@typescript-eslint/space-before-function-paren": "off",
   },
   settings: {
     'import/parsers': {

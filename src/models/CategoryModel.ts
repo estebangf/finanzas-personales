@@ -101,6 +101,20 @@ export const CategoryList: Array<{
     ]
   },
   {
+    superior: 'Deudas',
+    lowers: [
+      'Tarjeta de credito',
+      'Mercado Credito',
+      'Prestamos',
+      'Cuotas',
+      'Planes',
+      'Contra Facturas',
+      'Familia',
+      'Amigos',
+      'Otras deudas'
+    ]
+  },
+  {
     superior: 'Otros gastos',
     lowers: [
       'Regalos',
@@ -121,6 +135,7 @@ export type CategorySuperior =
   'Seguros' |
   'Higiene' |
   'Diversión' |
+  'Deudas' |
   'Otros gastos' |
   'SIN CATEGORIA'
 
@@ -165,6 +180,15 @@ export type CategoryLower =
   'Revistas' |
   'Libros' |
   'Otros Diversión' |
+  'Tarjeta de credito' |
+  'Mercado Credito' |
+  'Prestamos' |
+  'Cuotas' |
+  'Planes' |
+  'Familia' |
+  'Amigos' |
+  'Contra Facturas' |
+  'Otras deudas' |
   'Regalos' |
   'Mascotas' |
   'Vacaciones' |
@@ -210,6 +234,16 @@ export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: S
   'Equipos electrónicos': MobileOff,
   Libros: Castle,
   'Otros Diversión': Inbox,
+  Deudas: Inbox,
+  'Tarjeta de credito': Inbox,
+  'Mercado Credito': Inbox,
+  Prestamos: Inbox,
+  Cuotas: Inbox,
+  Planes: Inbox,
+  Familia: Inbox,
+  Amigos: Inbox,
+  'Contra Facturas': Inbox,
+  'Otras deudas': Inbox,
   Regalos: MonetizationOn,
   Vacaciones: MobileOff,
   Veterinario: MobileOff,

@@ -1,12 +1,13 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, InputAdornment, List, ListItemIcon, ListItemText, MenuItem, Skeleton, styled, TextField } from '@mui/material'
-import { useEffect, useRef, useState } from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader, MenuItem, Skeleton, styled, TextField, Typography } from '@mui/material'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SkeletonInput from '../components/skeletons/SkeletonInput'
 import { CategoryList, CategoryListIcons } from '../models/CategoryModel'
 import WalletModel, { initialWallet } from '../models/WalletModel'
-import { createWallet, deleteWallet, getWallet, updateWallet } from '../tools/firebase.functions'
+import { addNewOwner, createWallet, deleteWallet, getOwnersOfList, getWallet, updateWallet } from '../tools/firebase.functions'
 import useAuth from '../tools/useAuth'
-import { Close } from '@mui/icons-material'
+import { Add, Close } from '@mui/icons-material'
+import ProfileModel from '../models/ProfileModel'
 
 const InputWallet = styled(TextField)({
   marginTop: 12
@@ -22,7 +23,27 @@ const Wallet: React.FC<{}> = () => {
     _creator: user?.uid ?? '',
     owners: [user?.uid ?? '']
   })
+  const [profilesOwners, setProfilesOwners] = useState<ProfileModel[]>([])
+  const [newOwner, setOwner] = useState('')
+
   const refInputAmount = useRef<HTMLInputElement>(null!)
+
+  const getOwners = useCallback(function () {
+    getOwnersOfList(wallet.owners, firestore)
+      .then(r => setProfilesOwners(r))
+      .catch(e => alert(e))
+  }, [wallet])
+
+  function saveNewOwner (): void {
+    addNewOwner(wallet, newOwner, firestore).then(r => {
+      setWallet(p => ({
+        ...p,
+        owners: [...p.owners, r._id]
+      }))
+      setProfilesOwners(p => [...p, r])
+    })
+      .catch(e => alert(e))
+  }
 
   useEffect(() => {
     if (_id) {
@@ -35,6 +56,7 @@ const Wallet: React.FC<{}> = () => {
         getWallet(_id, firestore)
           .then(_w => {
             setWallet(_w)
+            getOwners()
           })
           .catch(e => console.error(e))
       }
@@ -166,13 +188,43 @@ const Wallet: React.FC<{}> = () => {
             InputProps={{
               startAdornment: <InputAdornment position="start">$</InputAdornment>
             }} />
+          <List dense
+            // sx={{ pb: 4 }}
+            subheader={
+              <ListSubheader sx={{ pl: 0 }} component="div" id="list-owners">
+                Lista de colaboradores
+              </ListSubheader>
+            }
+          >
+            {profilesOwners.map(profile => (
+              <ListItem sx={{ alignItems: "baseline" }} disablePadding key={`profile:${profile._id}`}>
+                {profile.displayName}
+                {profile._id === wallet._creator && (<Typography sx={{ pl: 2, color: 'gray' }} variant='caption'>Creador</Typography>)}
+              </ListItem>
+            ))}
+            <ListItem
+              secondaryAction={
+                <IconButton onClick={saveNewOwner} edge="end" aria-label="comments">
+                  <Add />
+                </IconButton>
+              }
+              key="profile:new"
+              disablePadding
+            >
+              <InputWallet
+                variant='standard'
+                sx={{ mt: 0 }}
+                fullWidth onChange={e => setOwner(e.target.value.trim())} name='new-owner' value={newOwner} placeholder="Nuevo colaborador/a" label="Nuevo colaborador/a" type="text"
+              />
+            </ListItem>
+          </List>
         </DialogContent>
       }
       <DialogActions>
-        { _id !== 'new' && (
-        <Button fullWidth variant="text" color='secondary' onClick={remove}>
-          Eliminar
-        </Button>
+        {_id !== 'new' && (
+          <Button fullWidth variant="text" color='secondary' onClick={remove}>
+            Eliminar
+          </Button>
         )}
         <Button fullWidth variant="contained" disabled={!wallet._id} onClick={save}>
           {!wallet._id ? '...' : wallet._id === 'new' ? 'Crear' : 'Guardar'}

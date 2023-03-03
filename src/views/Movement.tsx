@@ -5,7 +5,7 @@ import AmountSwitch from '../components/AmountSwitch'
 import SkeletonInput from '../components/skeletons/SkeletonInput'
 import { CategoryList, CategoryListIcons } from '../models/CategoryModel'
 import MovementModel, { initialMovement } from '../models/MovementModel'
-import { createMovement, getMovement, updateMovement } from '../tools/firebase.functions'
+import { createMovement, deleteMovement, getMovement, updateMovement } from '../tools/firebase.functions'
 import useAuth from '../tools/useAuth'
 import useWallets from '../tools/useWallets'
 import { dateFromInput } from '../tools/date.functions'
@@ -121,6 +121,19 @@ const Movement: React.FC<{}> = () => {
     }))
   }, [isPositive])
 
+  function remove (): void {
+    if (_id === 'new') {
+      throw new Error('Falta implementar.')
+    } else {
+      deleteMovement(movement, firestore).then(r => {
+        navigate(-1)
+      }).catch(e => {
+        console.error('Update Movement:', e)
+      })
+    }
+    // console.error("Guardar en la base de datos no implementado");
+  }
+
   return (
     <Dialog fullWidth={true} maxWidth='xs' open={true} onClose={e => navigate(-1)}>
       <DialogTitle sx={{
@@ -221,9 +234,11 @@ const Movement: React.FC<{}> = () => {
         </DialogContent>
       }
       <DialogActions>
-        <Button fullWidth variant="text" color='secondary' onClick={e => navigate(-1)}>
-          Cancelar
-        </Button>
+        {_id !== 'new' && (
+          <Button fullWidth variant="text" color='secondary' onClick={remove}>
+            Eliminar
+          </Button>
+        )}
         <Button fullWidth variant="contained" disabled={!movement._id} onClick={save}>
           {!movement._id ? '...' : movement._id === 'new' ? 'Crear' : 'Guardar'}
         </Button>

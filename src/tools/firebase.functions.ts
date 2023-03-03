@@ -1,10 +1,11 @@
-import { collection, onSnapshot, addDoc, Firestore, query, where, updateDoc, doc, increment, getDoc, deleteDoc } from 'firebase/firestore'
+import { collection, onSnapshot, addDoc, Firestore, query, where, updateDoc, doc, increment, getDoc, deleteDoc, getDocs, arrayUnion } from 'firebase/firestore'
 import MovementModel, { movementConverter, MovementsModel, MOVEMENTS_COLLECTION } from '../models/MovementModel'
 import WalletModel, { walletConverter, WalletsModel, WALLETS_COLLECTION } from '../models/WalletModel'
 import { getComparator } from './getComparator'
+import ProfileModel, { PROFILES_COLLECTION, profileConverter } from '../models/ProfileModel'
 
 // export const getMovements = (firestore: Firestore) => new Promise<MovementsModel>((resolve, reject) => {
-//   let queryMovements = collection(firestore, MOVEMENTS_COLLECTION).withConverter(movementConverter)
+//   const queryMovements = collection(firestore, MOVEMENTS_COLLECTION).withConverter(movementConverter)
 //   getDocs(queryMovements).then(_movements => {
 //     let movements: MovementsModel = []
 //     _movements.forEach(_movement => {
@@ -63,8 +64,19 @@ export const updateMovement = (movement: MovementModel, firestore: Firestore): P
     .catch(e => reject(e))
 })
 
+export const deleteMovement = (movement: MovementModel, firestore: Firestore): Promise<void> => new Promise<void>((resolve, reject) => {
+  const queryMovements = doc(firestore, MOVEMENTS_COLLECTION, movement._id).withConverter(movementConverter)
+  deleteDoc(queryMovements).then(result => {
+    updateWalletBalance(movement._wallet, -movement.amount, firestore).then(r => {
+      resolve()
+    })
+      .catch(e => reject(e))
+  })
+    .catch(e => reject(e))
+})
+
 // export const getWallets = (firestore: Firestore) => new Promise<WalletsModel>((resolve, reject) => {
-//   let queryWallets = collection(firestore, WALLETS_COLLECTION).withConverter(walletConverter)
+//   const queryWallets = collection(firestore, WALLETS_COLLECTION).withConverter(walletConverter)
 //   getDocs(queryWallets).then(_wallets => {
 //     let wallets: WalletsModel = []
 //     _wallets.forEach(_wallet => {
@@ -124,6 +136,36 @@ export const deleteWallet = (wallet: WalletModel, firestore: Firestore): Promise
   const queryWallets = doc(firestore, WALLETS_COLLECTION, wallet._id)
   deleteDoc(queryWallets).then(result => {
     resolve()
+  })
+    .catch(e => reject(e))
+})
+
+export const getOwnersOfList = (owners: string[], firestore: Firestore): Promise<ProfileModel[]> => new Promise<ProfileModel[]>((resolve, reject) => {
+  const queryProfiles = collection(firestore, PROFILES_COLLECTION).withConverter(profileConverter)
+  getDocs(queryProfiles).then(_profiles => {
+    const profiles: ProfileModel[] = []
+    _profiles.forEach(_profile => {
+      profiles.push(_profile.data())
+    })
+    // resolve(profiles.slice().sort(getComparator('desc', 'name')))
+    resolve(profiles)
+  }).catch(e => reject(e))
+})
+
+export const addNewOwner = (wallet: WalletModel, newOwner: string, firestore: Firestore): Promise<ProfileModel> => new Promise<ProfileModel>((resolve, reject) => {
+  if (wallet.owners.includes(newOwner)) reject(new Error('El colaborador ya existe'))
+  const queryWallets = doc(firestore, WALLETS_COLLECTION, wallet._id).withConverter(walletConverter)
+  const queryProfile = doc(firestore, PROFILES_COLLECTION, newOwner).withConverter(profileConverter)
+  getDoc(queryProfile).then(result => {
+    if (result.exists()) {
+      const profileAdded = result.data()
+      updateDoc(queryWallets, {
+        owners: arrayUnion(newOwner)
+      }).then(result => {
+        resolve(profileAdded)
+      })
+        .catch(e => reject(e))
+    } else { reject(new Error('Cuenta inexistente')) }
   })
     .catch(e => reject(e))
 })
