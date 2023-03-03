@@ -26,6 +26,18 @@ export const CategoryList: Array<{
     lowers: []
   },
   {
+    superior: 'Alimentos',
+    lowers: [
+      'Frutas y Verduras',
+      'Carnes',
+      'Lacteos',
+      'No perecederos',
+      'Postres',
+      'Comida rapida',
+      'Alimentos varios'
+    ]
+  },
+  {
     superior: 'Casa',
     lowers: [
       'Alquiler',
@@ -129,6 +141,7 @@ export const CategoryList: Array<{
 
 export type CategorySuperior =
   'Casa' |
+  'Alimentos' |
   'Salud' |
   'Transporte' |
   'Ropa y calzado' |
@@ -146,6 +159,13 @@ export type CategoryLower =
   'Electrodomésticos' |
   'Triturador de basura' |
   'Otros Casa' |
+  'Frutas y Verduras' |
+  'Carnes' |
+  'Lacteos' |
+  'No perecederos' |
+  'Postres' |
+  'Comida rapida' |
+  'Alimentos varios' |
   'Gasto en médicos' |
   'Medicamentos' |
   'Dentista' |
@@ -199,6 +219,14 @@ export type CategoryLower =
 export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: SvgIconComponent } = {
   Casa: Castle,
   Salud: Inbox,
+  Alimentos: Inbox,
+  'Frutas y Verduras': Inbox,
+  Carnes: Inbox,
+  Lacteos: Inbox,
+  'No perecederos': Inbox,
+  Postres: Inbox,
+  'Comida rapida': Inbox,
+  'Alimentos varios': Inbox,
   Transporte: MonetizationOn,
   'Ropa y calzado': Percent,
   Seguros: MobileOff,
@@ -249,7 +277,6 @@ export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: S
   Veterinario: MobileOff,
   Caridad: NoBackpack,
   'Gastos varios': NoBackpack,
-  'SIN CATEGORIA': Inbox,
   Muebles: MobileOff,
   Electrodomésticos: NoBackpack,
   Cosmética: Castle,
@@ -258,7 +285,8 @@ export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: S
   Piscina: Castle,
   'Cursos, etc.': Inbox,
   Revistas: MonetizationOn,
-  Mascotas: MobileOff
+  Mascotas: MobileOff,
+  'SIN CATEGORIA': Inbox
 }
 export default CategoryModel
 
