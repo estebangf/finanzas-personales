@@ -9,6 +9,7 @@ import { createMovement, deleteMovement, getMovement, updateMovement } from '../
 import useAuth from '../tools/useAuth'
 import useWallets from '../tools/useWallets'
 import { dateFromInput } from '../tools/date.functions'
+import CategoryItem from '../components/CategoryItem'
 
 const InputMovement = styled(TextField)({
   marginTop: 12
@@ -206,12 +207,7 @@ const Movement: React.FC<{}> = () => {
               const IconCategorySuperior = CategoryListIcons[superior]
               return [
                 <MenuItem key={superior} value={superior}>
-                  <ListItemIcon>
-                    <IconCategorySuperior />
-                  </ListItemIcon>
-                  <ListItemText>
-                    {superior}
-                  </ListItemText>
+                  <CategoryItem name={superior} />
                 </MenuItem>,
                 lowers.map((lower) => {
                   const IconCategoryLower = CategoryListIcons[lower]
@@ -219,12 +215,7 @@ const Movement: React.FC<{}> = () => {
                     <MenuItem sx={{
                       pl: 4
                     }} key={lower} value={lower}>
-                      <ListItemIcon>
-                        <IconCategoryLower />
-                      </ListItemIcon>
-                      <ListItemText>
-                        {lower}
-                      </ListItemText>
+                      <CategoryItem name={lower} />
                     </MenuItem>
                   )
                 })

@@ -4,10 +4,11 @@
   right: 0;
   bottom: 0;
   position: fixed;
-  background-image: url(./fondo.png);
+  background-color: #f3f3f3a1;
+  /* background-image: url(./fondo.png);
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center; */
   overflow: hidden;
   z-index: -999999;
 }

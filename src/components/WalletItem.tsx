@@ -20,43 +20,46 @@ const WalletItem: React.FC<WalletProps> = ({ wallet }) => {
         color: 'inherit',
         textDecoration: 'none'
       }}
-      // onAuxClick={e => {
-      //   e.preventDefault()
-      //   navigate(wallet._id)
-      // }}
+    // onAuxClick={e => {
+    //   e.preventDefault()
+    //   navigate(wallet._id)
+    // }}
     >
-      <ListItem
-        sx={{
-          bgcolor: '#FFFFFF',
+      <Paper sx={{
+        // bgcolor: '#1976d20a'
+      }}>
+        <ListItem sx={{
+          // bgcolor: '#FFFFFF',
           userSelect: 'none',
           borderRadius: 2,
-          mb: 2,
-          boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px'
+          mb: 2
+          // boxShadow: 'rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px'
         }}
-        onClick={() => {
-          setWalletSelected(wallet)
-          // navigate('/movements')
-        }}
-        onContextMenu={e => {
-          e.preventDefault()
-          navigate(wallet._id)
-        }}
-      >
-        <ListItemText sx={{
-          textAlign: 'start'
-        }}
-          primary={<Typography variant="subtitle1">{wallet.name}</Typography>}
-        />
-        <ListItemText sx={{
-          textAlign: 'end',
-          color: getColor()
-        }}
-          primary={<Typography variant="h6">
-            {'$  ' + Math.abs(wallet.balance).toFixed(2)}
-          </Typography>}
-          secondary={wallet.created.toLocaleDateString()}
-        />
-      </ListItem>
+          onClick={() => {
+            setWalletSelected(wallet)
+            // navigate('/movements')
+          }}
+          onContextMenu={e => {
+            e.preventDefault()
+            navigate(wallet._id)
+          }}
+        >
+          <ListItemText sx={{
+            textAlign: 'start'
+          }}
+            primary={<Typography variant="subtitle1">{wallet.name}</Typography>}
+          />
+          <ListItemText sx={{
+            textAlign: 'end',
+            color: getColor()
+          }}
+            primary={<Typography variant="h6">
+              {'$  ' + Math.abs(wallet.balance).toFixed(2)}
+            </Typography>}
+            secondary={wallet.created.toLocaleDateString()}
+          />
+        </ListItem>
+      </Paper>
     </Link>
   )
 }
