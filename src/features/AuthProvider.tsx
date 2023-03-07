@@ -7,6 +7,7 @@ import firebaseConfig from '../tools/firebase.config'
 import ProfileModel, { PROFILES_COLLECTION, profileConverter } from '../models/ProfileModel'
 
 export interface AuthContextType {
+  initialized: boolean
   title: string
   setTitle: React.Dispatch<React.SetStateAction<string>>
   user: User | null
@@ -21,6 +22,7 @@ export interface AuthContextType {
 export const AuthContext = React.createContext<AuthContextType>(null!)
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [initialized, setInitialized] = useState(false)
   const [title, setTitle] = useState('Finanzas Personales')
   const [user, setUser] = useState<User | null>(null)
   // const [profile, setProfile] = useState<ProfileModel | null>(null);
@@ -38,6 +40,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         localStorage.removeItem('accessToken')
       }
       setUser(userObserver)
+      setInitialized(true)
     })
   }, [auth])
 
@@ -50,6 +53,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   return (
     <AuthContext.Provider value={{
+      initialized,
       title,
       setTitle,
       user,

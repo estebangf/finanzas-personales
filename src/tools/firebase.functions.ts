@@ -3,6 +3,7 @@ import MovementModel, { movementConverter, MovementsModel, MOVEMENTS_COLLECTION 
 import WalletModel, { walletConverter, WalletsModel, WALLETS_COLLECTION } from '../models/WalletModel'
 import { getComparator } from './getComparator'
 import ProfileModel, { PROFILES_COLLECTION, profileConverter } from '../models/ProfileModel'
+import { CreditsModel, CREDITS_COLLECTION, creditConverter } from '../models/CreditModel'
 
 // export const getMovements = (firestore: Firestore) => new Promise<MovementsModel>((resolve, reject) => {
 //   const queryMovements = collection(firestore, MOVEMENTS_COLLECTION).withConverter(movementConverter)
@@ -169,3 +170,15 @@ export const addNewOwner = (wallet: WalletModel, newOwner: string, firestore: Fi
   })
     .catch(e => reject(e))
 })
+
+export const onSnapshotCredits = (setCredits: (credits: CreditsModel) => void, wid: string, firestore: Firestore): void => {
+  const ref = collection(firestore, CREDITS_COLLECTION).withConverter(creditConverter)
+  const queryCredits = query(ref, where('_wallet', '==', wid))
+  onSnapshot(queryCredits, _credits => {
+    const credits: CreditsModel = []
+    _credits.forEach(_credit => {
+      credits.push(_credit.data())
+    })
+    setCredits(credits.slice().sort(getComparator('desc', 'date')))
+  })
+}

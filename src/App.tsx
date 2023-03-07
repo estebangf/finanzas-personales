@@ -4,7 +4,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import MainLayout from './layouts'
 import { ThemeProvider } from '@emotion/react'
-import { createTheme, Dialog } from '@mui/material'
+import { CircularProgress, createTheme, Dialog } from '@mui/material'
 import Movements from './views/Movements'
 import RequireAuth from './components/auth/RequireAuth'
 import SignIn from './views/SignIn'
@@ -15,6 +15,8 @@ import MovementsProvider from './features/MovementsProvider'
 import Wallets from './views/Wallets'
 import Wallet from './views/Wallet'
 import LoadingPage from './views/LoadingPage'
+import CreditsProvider from './features/CreditsProvider'
+import Credits from './views/Credits'
 
 const lightTheme = createTheme({
   palette: {
@@ -54,32 +56,39 @@ const darkTheme = createTheme({
   }
 })
 
-const App: React.FC<{}> = () => {
+// interface AppPrps { }
+// const App: React.FC<AppPrps> = () => {
+const App: React.FC = () => {
   const auth = useAuth()
 
   return (
     <div className={(auth.user != null) ? 'App-logued' : 'App'}>
-      <div id="fondo" />
       <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="" element={<RequireAuth required={true}><WalletsProvider><MainLayout /></WalletsProvider></RequireAuth>}>
-              <Route path="" element={<LoadingPage />} />
-              <Route path="wallets" element={<Wallets />}>
-                <Route path=":_id" element={<Wallet />} />
+        {auth.initialized
+          ? <BrowserRouter>
+            <Routes>
+              <Route path="" element={<RequireAuth required={true}><WalletsProvider><MainLayout /></WalletsProvider></RequireAuth>}>
+                <Route path="" element={<LoadingPage />} />
+                <Route path="wallets" element={<Wallets />}>
+                  <Route path=":_id" element={<Wallet />} />
+                </Route>
+                <Route path="movements" element={<MovementsProvider><Movements /></MovementsProvider>}>
+                  <Route path=":_id" element={<Movement />} />
+                </Route>
+                <Route path="credits" element={<CreditsProvider><Credits /></CreditsProvider>}>
+                  {/* <Route path=":_id" element={<Credit />} /> */}
+                </Route>
+                <Route path="Como usar" element={<div>Como usar</div>} />
+                <Route path="profile" element={<div>Perfil</div>} />
+                <Route path="settings" element={<div>Opciones</div>} />
               </Route>
-              <Route path="movements" element={<MovementsProvider><Movements /></MovementsProvider>}>
-                <Route path=":_id" element={<Movement />} />
-              </Route>
-              <Route path="Como usar" element={<div>Como usar</div>} />
-              <Route path="profile" element={<div>Perfil</div>} />
-              <Route path="settings" element={<div>Opciones</div>} />
-            </Route>
-            <Route path="about" element={<div>Acerca de</div>} />
+              <Route path="about" element={<div>Acerca de</div>} />
 
-            <Route path="signin" element={<RequireAuth required={false} exclud={true}><SignIn /></RequireAuth>} />
-          </Routes>
-        </BrowserRouter>
+              <Route path="signin" element={<RequireAuth required={false} exclud={true}><SignIn /></RequireAuth>} />
+            </Routes>
+          </BrowserRouter>
+          : <CircularProgress />
+        }
       </ThemeProvider>
     </div >
   )

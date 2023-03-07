@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import ToolBarApp from '../components/ToolBarApp'
 import Box from '@mui/material/Box'
+import BottomBarApp from '../components/BottomBarApp'
 
 const MainLayout: React.FC<{}> = () => {
   return (
@@ -21,6 +22,7 @@ const MainLayout: React.FC<{}> = () => {
           <Outlet />
         </Box>
       </Box>
+      <BottomBarApp />
     </div>
   )
 }

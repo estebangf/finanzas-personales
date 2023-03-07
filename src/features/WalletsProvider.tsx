@@ -26,6 +26,8 @@ const WalletsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
       if (walletSelected != null) {
         const walletFind = wallets.find(w => w._id === walletSelected._id)
         if (walletFind == null) { setWalletSelected(undefined) } else if (!compareWallet(walletFind, walletSelected)) { setWalletSelected(walletFind) }
+      } else {
+        setWalletSelected(wallets[0])
       }
     } else if (walletSelected != null) {
       setWalletSelected(undefined)
