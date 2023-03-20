@@ -28,6 +28,9 @@ const BottomBarApp: React.FC = () => {
           disabled
           value='/credits' label="Creditos"
           icon={<Avatar sx={{ width: 32, height: 32 }} src='/icons/icon (3).png' />} />
+        <BottomNavigationAction
+          value='/graphics' label="Graficos"
+          icon={<Avatar sx={{ width: 32, height: 32 }} src='/icons/icon (4).png' />} />
       </BottomNavigation>
     </Paper >
   )

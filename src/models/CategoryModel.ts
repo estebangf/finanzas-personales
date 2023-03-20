@@ -41,7 +41,7 @@ export const CategoryList: Array<{
     superior: 'Casa',
     lowers: [
       'Alquiler',
-      'Reparación',
+      'Reparaciones en Casa',
       'Muebles',
       'Electrodomésticos',
       'Triturador de basura',
@@ -61,7 +61,7 @@ export const CategoryList: Array<{
     superior: 'Transporte',
     lowers: [
       'Combustible',
-      'Transporte',
+      'Transporte Público',
       'Reparación',
       'Servicio fluidos, neumáticos',
       'Lavado de coches',
@@ -154,7 +154,7 @@ export type CategorySuperior =
 
 export type CategoryLower =
   'Alquiler' |
-  'Reparación' |
+  'Reparaciones en Casa' |
   'Muebles' |
   'Electrodomésticos' |
   'Triturador de basura' |
@@ -171,7 +171,7 @@ export type CategoryLower =
   'Dentista' |
   'Otros Salud' |
   'Combustible' |
-  'Transporte' |
+  'Transporte Público' |
   'Reparación' |
   'Servicio fluidos, neumáticos' |
   'Lavado de coches' |
@@ -235,6 +235,7 @@ export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: s
   Diversión: 'icon (122)',
   'Otros gastos': 'icon (117)',
   Alquiler: 'icon (89)',
+  'Reparaciones en Casa': 'icon (92)',
   Reparación: 'icon (92)',
   'Triturador de basura': 'icon (51)',
   'Otros Casa': 'icon (64)',
@@ -245,6 +246,7 @@ export const CategoryListIcons: { [key in (CategorySuperior | CategoryLower)]: s
   Combustible: 'icon (52)',
   'Servicio fluidos, neumáticos': 'icon (105)',
   'Lavado de coches': 'icon (120)',
+  'Transporte Público': 'icon (16)',
   'Otros Transporte': 'icon (128)',
   'Ropa de adultos': 'icon (59)',
   'Ropa de niños': 'icon (111)',

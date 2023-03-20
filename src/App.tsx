@@ -1,10 +1,9 @@
 import React from 'react'
-import logo from './logo.svg'
 import './App.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import MainLayout from './layouts'
 import { ThemeProvider } from '@emotion/react'
-import { CircularProgress, createTheme, Dialog } from '@mui/material'
+import { Box, CircularProgress, createTheme, Dialog, LinearProgress } from '@mui/material'
 import Movements from './views/Movements'
 import RequireAuth from './components/auth/RequireAuth'
 import SignIn from './views/SignIn'
@@ -17,6 +16,7 @@ import Wallet from './views/Wallet'
 import LoadingPage from './views/LoadingPage'
 import CreditsProvider from './features/CreditsProvider'
 import Credits from './views/Credits'
+import Graphics from './views/Graphics'
 
 const lightTheme = createTheme({
   palette: {
@@ -78,6 +78,9 @@ const App: React.FC = () => {
                 <Route path="credits" element={<CreditsProvider><Credits /></CreditsProvider>}>
                   {/* <Route path=":_id" element={<Credit />} /> */}
                 </Route>
+                <Route path="graphics" element={<MovementsProvider><Graphics /></MovementsProvider>}>
+                  {/* <Route path=":_id" element={<Movement />} /> */}
+                </Route>
                 <Route path="Como usar" element={<div>Como usar</div>} />
                 <Route path="profile" element={<div>Perfil</div>} />
                 <Route path="settings" element={<div>Opciones</div>} />
@@ -87,7 +90,23 @@ const App: React.FC = () => {
               <Route path="signin" element={<RequireAuth required={false} exclud={true}><SignIn /></RequireAuth>} />
             </Routes>
           </BrowserRouter>
-          : <CircularProgress />
+          : <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%'
+          }}
+          >
+            <img src='logo96.png' alt="Cargando..." />
+            <LinearProgress sx={{
+              position: 'fixed',
+              bottom: 48,
+              width: 200,
+              marginTop: 2,
+              height: 8
+            }} />
+          </Box>
         }
       </ThemeProvider>
     </div >
