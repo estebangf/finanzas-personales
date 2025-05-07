@@ -28,8 +28,8 @@ const Wallet: React.FC<{}> = () => {
 
   const refInputAmount = useRef<HTMLInputElement>(null!)
 
-  const getOwners = useCallback(function () {
-    getOwnersOfList(wallet.owners, firestore)
+  const getOwners = useCallback(function (owners: string[]): void {
+    getOwnersOfList(owners, firestore)
       .then(r => setProfilesOwners(r))
       .catch(e => alert(e))
   }, [wallet])
@@ -56,7 +56,7 @@ const Wallet: React.FC<{}> = () => {
         getWallet(_id, firestore)
           .then(_w => {
             setWallet(_w)
-            getOwners()
+            getOwners(_w.owners)
           })
           .catch(e => console.error(e))
       }

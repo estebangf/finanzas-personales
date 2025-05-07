@@ -1,4 +1,4 @@
-import { collection, onSnapshot, addDoc, Firestore, query, where, updateDoc, doc, increment, getDoc, deleteDoc, getDocs, arrayUnion } from 'firebase/firestore'
+import { collection, onSnapshot, addDoc, Firestore, query, where, updateDoc, doc, increment, getDoc, deleteDoc, getDocs, arrayUnion, documentId } from 'firebase/firestore'
 import MovementModel, { movementConverter, MovementsModel, MOVEMENTS_COLLECTION } from '../models/MovementModel'
 import WalletModel, { walletConverter, WalletsModel, WALLETS_COLLECTION } from '../models/WalletModel'
 import { getComparator } from './getComparator'
@@ -142,7 +142,12 @@ export const deleteWallet = (wallet: WalletModel, firestore: Firestore): Promise
 })
 
 export const getOwnersOfList = (owners: string[], firestore: Firestore): Promise<ProfileModel[]> => new Promise<ProfileModel[]>((resolve, reject) => {
-  const queryProfiles = collection(firestore, PROFILES_COLLECTION).withConverter(profileConverter)
+  const queryProfiles = query(
+    collection(firestore, PROFILES_COLLECTION).withConverter(profileConverter),
+    where(documentId(), 'in', owners)
+  )
+  console.log("owners: ", owners)
+
   getDocs(queryProfiles).then(_profiles => {
     const profiles: ProfileModel[] = []
     _profiles.forEach(_profile => {
